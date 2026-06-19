@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    function goLogin() {
+    function goLogin(tes) {
         window.location.href = "login/index.html";
     }
 
