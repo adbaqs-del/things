@@ -13,24 +13,69 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     });
 
     const data = await res.json();
- 
-    if (data.status === "success") {
-        // simpan username
-            localStorage.setItem("username", data.username);
-            window.location.href = "../index.html";
-         
-    // } else {
-    //     document.getElementById("message").innerText = "Username / Password salah";alert("Login gagal");
-    // }
-    
-    } else {
-    const alertBox = document.getElementById("alertBox");
-    alertBox.innerText = "Username atau Password salah, silahkan coba lagi";
-    alertBox.style.display = "block";
 
-    setTimeout(() => {
-        alertBox.style.display = "none";
-    }, 3000);
-} 
-   
+    // ambil data reset password lokal
+    const resetUser = localStorage.getItem("resetUser");
+    const resetPass = localStorage.getItem("resetPass");
+
+    // kalau user pernah reset password
+    if (username === resetUser) {
+
+        // cek password baru
+        if (password === resetPass) {
+
+            localStorage.setItem("username", username);
+
+            window.location.href = "../index.html";
+
+        } else {
+
+            const alertBox = document.getElementById("alertBox");
+
+            alertBox.innerText = "Password baru salah";
+
+            alertBox.style.display = "block";
+
+            setTimeout(() => {
+                alertBox.style.display = "none";
+            }, 3000);
+        }
+
+    // kalau belum pernah reset password
+    } else if (data.status === "success") {
+
+        localStorage.setItem("username", username);
+
+        window.location.href = "../index.html";
+
+    } else {
+
+        const alertBox = document.getElementById("alertBox");
+
+        alertBox.innerText = "Username atau Password salah";
+
+        alertBox.style.display = "block";
+
+        setTimeout(() => {
+            alertBox.style.display = "none";
+        }, 3000);
+    }
 });
+
+
+// FORGOT PASSWORD
+function forgotPassword() {
+
+    const username = prompt("Masukkan username:");
+
+    if (!username) return;
+
+    const newPassword = prompt("Masukkan password baru:");
+
+    if (!newPassword) return;
+
+    localStorage.setItem("resetUser", username);
+    localStorage.setItem("resetPass", newPassword);
+
+    alert("Password berhasil diubah!");
+}
